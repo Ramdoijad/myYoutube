@@ -1,25 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import Body from './components/Body';
+import Head from './components/Head';
+import appStore from './utils/appStore';
+import { Provider } from 'react-redux';
+import MainContainer from './components/MainContainer';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import WatchPage from './components/WatchPage';
 
-function App() {
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <Body />,
+    children: [
+      {
+        path: "/",
+        element: <MainContainer />
+      },
+      {
+        // Update the dynamic route to use :videoId as path parameter
+        path: "/watch",
+        element: <WatchPage />
+      }
+    ]
+  }
+]);
+
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Provider store={appStore}>
+      <Head />
+      <RouterProvider router={appRouter} />
+    </Provider>
   );
-}
+};
 
 export default App;
